@@ -2,7 +2,6 @@
   <div>
     <SectionHeader/>
     <main class="main">
-      <SectionSlider/>
       <div class="content">
         <div class="container">
           <div class="container">
@@ -115,7 +114,7 @@ import Swal from 'sweetalert2';
               this.form.password          = '';
               this.form.confirm_password  = '';
               this.form.contact           = '';
-              this.$router.replace('/login');
+              this.$router.replace('/registration-verify');
             });
           }
           else {

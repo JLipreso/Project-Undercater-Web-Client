@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between">
-      <h1>Add Food</h1>
-      <button class="btn btn-primary btn-lg w-25">Add to Cart</button>
-    </div>
+    <h1>Add Food</h1>
+    <p class="m-0">Please select {{ validate.dish }} food and {{ validate.dessert }} dessert</p>
     <div class="py-4">
-      <swiper :modules="modules" :slides-per-view="1" :space-between="5" navigation @swiper="onSwiper">
-        <swiper-slide v-for="(menu, mi) in 7" :key="mi">
-          <div class="card border-0">
+      <swiper :modules="modules" :slides-per-view="1.5" :space-between="5" navigation @swiper="onSwiper">
+        <swiper-slide v-for="(menu, mi) in menus" :key="mi">
+          <div class="card border-1">
             <img src="https://static.vecteezy.com/system/resources/previews/036/804/331/non_2x/ai-generated-assorted-indian-food-on-dark-wooden-background-free-photo.jpg" />
-            <div class="card-body">
-              <h1>Fried Chicken</h1>
-              <p>Fried chicken is crispy, golden chicken seasoned and deep-fried to perfection, tender and juicy inside.</p>
+            <div class="card-body" style="overflow-y:auto;height: 240px;">
+              <h4>{{ menu?.name }}</h4>
+              <p>{{ menu?.description }}</p>
+              <p>Category: <span class="badge text-bg-warning">{{ menu?.category }}</span></p>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-clear-primary w-100" @click="addToCart(menu)" >Add to Cart</button>
             </div>
           </div>
         </swiper-slide>
@@ -28,6 +30,10 @@
   import { defineComponent } from 'vue';
   import { Navigation, Pagination } from 'swiper/modules';
   import { Swiper, SwiperSlide } from 'swiper/vue';
+import axios from 'axios';
+import { variable } from '@/var';
+import { getBookingDataID } from '@/assets/ts/localStorage';
+import Swal from 'sweetalert2';
 
   export default defineComponent({
     name: "SlideContent2",
@@ -40,20 +46,54 @@
     },
     data() {
       return {
-        swiper: {} as any
+        swiper: {} as any,
+        menus: [] as any,
+        validate: {
+          dish: 5,
+          dessert: 1
+        }
       }
     },
     methods: {
       onSwiper(event: any) {
         this.swiper = event;
       },
-      nextSlide() {
+      async nextSlide() {
+        //http://127.0.0.1:8000/api/booking_foods/verify?booking_dataid=1
         this.$emit('next', { data: { index: 2 }});
       },
       backSlide() {
         this.$emit('back', { data: { index: 0 }});
+      },
+      async fetchAllMenu() {
+        await axios.get( variable()['api_main'] + "menu/fetchAll" ).then( async (response) => {
+          this.menus = response.data;
+        });
+      },
+      async addToCart(menu: any) {
+        await getBookingDataID().then( async (dataid) => {
+          await axios.get( variable()['api_main'] + "booking_foods/add?booking_dataid="+ dataid +"&menu_dataid=" + menu?.dataid + "&menu_category=" + menu?.category ).then( async (response) => {
+            if(response.data?.success) {
+              Swal.fire({
+                title: 'Added',
+                icon: 'success'
+              });
+            }
+            else {
+              Swal.fire({
+                title: 'Warning',
+                text: response.data?.message,
+                icon: 'warning'
+              });
+            }
+          });
+        });
+        
       }
-    }
+    },
+    async mounted() {
+      await this.fetchAllMenu();
+    },
   });
 
 </script>
