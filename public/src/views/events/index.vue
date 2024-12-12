@@ -3,7 +3,7 @@
     <SectionHeader/>
     <main class="main">
       <div class="content">
-        <SectionBanner title="Events" description="Come for the Food, stay for the memories"/>
+        <SectionBanner title="Booking" description="Come for the Food, stay for the memories"/>
         <div class="container py-5">
           <div class="row">
             <div class="col-sm-12 col-lg-6" v-for="(event, ei) in events" :key="ei">

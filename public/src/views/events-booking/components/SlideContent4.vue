@@ -7,21 +7,21 @@
       <div class="row">
         <div class="col-sm-12 col-md-6">
           <label class="form-label">First name</label>
-          <input type="text" class="form-control form-control-lg">
+          <input v-model="form.first_name" type="text" class="form-control form-control-lg">
         </div>
         <div class="col-sm-12 col-md-6">
           <label class="form-label">Last name</label>
-          <input type="text" class="form-control form-control-lg">
+          <input v-model="form.last_name"  type="text" class="form-control form-control-lg">
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-6">
           <label class="form-label">Email</label>
-          <input type="text" class="form-control form-control-lg">
+          <input v-model="form.email" type="text" class="form-control form-control-lg">
         </div>
         <div class="col-sm-12 col-md-6">
           <label class="form-label">Phone</label>
-          <input type="text" class="form-control form-control-lg">
+          <input v-model="form.phone" type="text" class="form-control form-control-lg">
         </div>
       </div>
       <p>Update ID Photo</p>
@@ -47,12 +47,54 @@
 <script lang="ts">
 
   import { defineComponent } from 'vue';
+  import { variable } from '@/var';
+  import axios from 'axios';
+  import { getBookingDataID } from '@/assets/ts/localStorage';
+  import Swal from 'sweetalert2';
+  import $ from 'jquery';
 
   export default defineComponent({
     name: "SlideContent4",
-    emits: ['next', 'back'],
+    emits: ['next', 'back', 'refresh'],
+    data() {
+      return {
+        form: {
+          booking_dataid: '',
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: ''
+        }
+      }
+    },
     methods: {
-      postBooking() {
+      async postBooking() {
+        await getBookingDataID().then( async (booking_dataid) => {
+          this.form.booking_dataid = booking_dataid;
+          await axios.get( variable()['api_main'] + "booking/placeReservation?" + $.param(this.form) ).then( async (response) => {
+            if(response.data?.success) {
+              Swal.fire({
+                title: 'Success',
+                text: response.data?.message,
+                icon: 'success'
+              }).then( async () => {
+                this.form.booking_dataid  = '';
+                this.form.first_name      = '';
+                this.form.last_name       = '';
+                this.form.email           = '';
+                this.form.phone           = '';
+                this.$router.replace('/events-booking-placed');
+              });
+            }
+            else {
+              Swal.fire({
+                title: 'Warning',
+                text: response.data?.message,
+                icon: 'warning'
+              });
+            }
+          });
+        });
         
       },
       backSlide() {

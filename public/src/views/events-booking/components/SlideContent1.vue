@@ -52,6 +52,7 @@
         </div>
       </div>
     </div>
+    <div></div>
     <div class="d-flex justify-content-end">
       <button class="btn btn-primary btn-lg" style="width: 200px;" @click="nextSlide()">Next</button>
     </div>

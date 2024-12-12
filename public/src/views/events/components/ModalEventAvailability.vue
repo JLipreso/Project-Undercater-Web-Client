@@ -83,7 +83,7 @@
         form: {
           date: '',
           start_time: '',
-          end_time: ''
+          end_time: '',
         }
       }
     },
@@ -123,7 +123,15 @@
       async proceedToBooking() {
         await getLocalUser().then( async (user) => {
           if(user) {
-            await axios.get( variable()['api_main'] + "booking/initBooking?user_dataid="+ user?.dataid +"&pax_price="+ this.event?.price +"&event_dataid=" + this.event?.dataid ).then( async (response) => {
+            var args = {
+              user_dataid: user?.dataid,
+              pax_price: this.event?.price,
+              event_dataid: this.event?.dataid,
+              event_date: this.form.date,
+              event_start_time: this.form.start_time,
+              event_end_time: this.form.end_time,
+            };
+            await axios.get( variable()['api_main'] + "booking/initBooking?" + $.param(args) ).then( async (response) => {
               if(response.data?.success) {
                 ls.set('booking-event', this.event );
                 ls.set('booking-dataid', response.data?.last_dataid);

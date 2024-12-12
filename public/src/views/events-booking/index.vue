@@ -7,14 +7,14 @@
           <div class="py-5">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <SummarySection/>
+                <SummarySection :refresh="refresh_summary" />
               </div>
               <div class="col-sm-12 col-md-6">
                 <swiper :slides-per-view="1" :space-between="0" @swiper="onSwiper">
-                  <swiper-slide class="swiper-no-swiping"><SlideContent1 :event="event" @next="slideToSlide" /></swiper-slide>
-                  <swiper-slide class="swiper-no-swiping"><SlideContent2 :event="event" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide class="swiper-no-swiping"><SlideContent3 :event="event" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide class="swiper-no-swiping"><SlideContent4 :event="event" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent1 :event="event" @refresh="refreshSummary()" @next="slideToSlide" /></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent2 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent3 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent4 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
                 </swiper>
               </div>
             </div>
@@ -36,7 +36,7 @@
   import SlideContent3 from "./components/SlideContent3.vue";
   import SlideContent4 from "./components/SlideContent4.vue";
   import SummarySection from "./components/SummarySection.vue";
-import { getLocalEvent } from '@/assets/ts/localStorage';
+  import { getLocalEvent } from '@/assets/ts/localStorage';
 
   export default defineComponent({
     name: "EventsBookingPage",
@@ -45,14 +45,19 @@ import { getLocalEvent } from '@/assets/ts/localStorage';
       return {
         swiper: {} as any,
         event: {} as any,
+        refresh_summary: 0
       }
     },
     methods: {
+      refreshSummary() {
+        this.refresh_summary = Math.random();
+      },
       onSwiper(event: any) {
         this.swiper = event;
       },
       slideToSlide(data: any) {
         this.swiper.slideTo(data.data?.index);
+        this.refreshSummary();
       }
     },
     async mounted() {

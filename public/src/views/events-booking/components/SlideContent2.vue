@@ -30,15 +30,16 @@
   import { defineComponent } from 'vue';
   import { Navigation, Pagination } from 'swiper/modules';
   import { Swiper, SwiperSlide } from 'swiper/vue';
-import axios from 'axios';
-import { variable } from '@/var';
-import { getBookingDataID } from '@/assets/ts/localStorage';
-import Swal from 'sweetalert2';
+  import { variable } from '@/var';
+  import { getBookingDataID } from '@/assets/ts/localStorage';
+  import axios from 'axios';
+  import Swal from 'sweetalert2';
+  import $ from 'jquery';
 
   export default defineComponent({
     name: "SlideContent2",
     components: { Swiper, SwiperSlide },
-    emits: ['next', 'back'],
+    emits: ['next', 'back', 'refresh'],
     setup() {
       return {
         modules: [Navigation, Pagination],
@@ -59,8 +60,25 @@ import Swal from 'sweetalert2';
         this.swiper = event;
       },
       async nextSlide() {
-        //http://127.0.0.1:8000/api/booking_foods/verify?booking_dataid=1
-        this.$emit('next', { data: { index: 2 }});
+        await getBookingDataID().then( async (booking_dataid) => {
+          var args = {
+            booking_dataid: booking_dataid,
+            target_dish: this.validate.dish,
+            target_dessert: this.validate.dessert
+          };
+          await axios.get( variable()['api_main'] + "booking_foods/verify?" + $.param(args) ).then( async (response) => {
+            if(response.data?.success) {
+              this.$emit('next', { data: { index: 2 }});
+            }
+            else {
+              Swal.fire({
+                title: 'Warning',
+                text: response.data?.message,
+                icon: 'warning'
+              });
+            }
+          });
+        });
       },
       backSlide() {
         this.$emit('back', { data: { index: 0 }});
@@ -77,6 +95,8 @@ import Swal from 'sweetalert2';
               Swal.fire({
                 title: 'Added',
                 icon: 'success'
+              }).then( async () => {
+                this.$emit('refresh');
               });
             }
             else {
