@@ -1,16 +1,11 @@
 <template>
-  <div>
-    <swiper :modules="modules" navigation :pagination="{ clickable: true }" :slides-per-view="1" :space-between="0" @swiper="onSwiper">
-      <swiper-slide>
-        <img class="home-banner-slider w-100" src="/src/assets/image/loretosHomeBanner.jpg"/>
-      </swiper-slide>
-      <swiper-slide>
-        <img class="home-banner-slider w-100" src="/src/assets/image/loretosHomeBanner.jpg"/>
-      </swiper-slide>
-      <swiper-slide>
-        <img class="home-banner-slider w-100" src="/src/assets/image/loretosHomeBanner.jpg"/>
-      </swiper-slide>
-    </swiper>
+  <div class="banner position-relative">
+    <div class="d-block p-5" style="height: calc(100vh - 90px);">
+      <div class="center-me pt-5" style="position: absolute;bottom: 120px;">
+        <h1 class="text-uppercase fw-bold text-white display-1" data-aos="fade-right" data-aos-easing="ease-in-out">UnderCater</h1>
+        <h4 class="text-uppercase text-white text-center" data-aos="fade-right" data-aos-easing="ease-in-out">RESERVE NOW</h4>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -41,10 +36,15 @@
 
 </script>
 <style scoped>
-  .home-banner-slider {
-    height: calc(100vh - 100px);
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
+  .banner.position-relative {
+    background-image: url('/src/assets/image/loretosHomeBanner.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  .center-me {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
   }
 </style>

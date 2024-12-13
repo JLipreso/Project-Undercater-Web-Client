@@ -44,7 +44,7 @@
   import { getBookingDataID } from '@/assets/ts/localStorage';
   import axios from 'axios';
   import $ from 'jquery';
-import Swal from 'sweetalert2';
+  import Swal from 'sweetalert2';
 
   export default defineComponent({
     name: "SlideContent3",

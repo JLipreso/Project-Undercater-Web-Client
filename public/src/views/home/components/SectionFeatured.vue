@@ -1,15 +1,9 @@
 <template>
-  <div class="py-3">
-    <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <h1 class="text-info">Food, substance consisting of protein, carbohydrate, fat, and other nutrients</h1>
-        <p>
-          Material consisting essentially of protein, carbohydrate, and fat used in the body of an organism to sustain growth, repair, and vital processes and to furnish energy. also : such material together with supplementary substances (as minerals, vitamins, and
-        </p>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <img class="w-100" src="/src/assets/img/hero_1.jpg"/>
-      </div>
+  <div class="card border-0">
+    <img class="w-100" src="/src/assets/img/hero_1.jpg"/>
+    <div class="card-body">
+      <h3 class="text-danger">{{ marketing?.title }}</h3>
+      <p>{{ marketing?.content }}</p>
     </div>
   </div>
 </template>
@@ -19,6 +13,12 @@
 
   export default defineComponent({
     name: "SectionFeatured",
+    props: {
+      marketing: {
+        default: {},
+        type: Object
+      }
+    },
     components: { }
   });
 

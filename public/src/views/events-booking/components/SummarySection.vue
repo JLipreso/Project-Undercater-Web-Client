@@ -57,6 +57,12 @@
           </table>
         </div>
       </div>
+      <div class="card mt-3">
+        <img clss="w-100" :src=" profile?.header?.valid_id_path ? 'https://api-fileserver.jlipreso.com/' + profile?.header?.valid_id_path:'' "/>
+        <div class="card-body">
+          <h6 class="fw-bold">Valid ID</h6>
+        </div>
+      </div>
       <table class="table" >
         <tbody>
           <tr>
