@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <img class="w-100" src="/src/assets/img/hero_1.jpg"/>
+    <img class="w-100" :src=" marketing?.photo ? marketing?.fullpath : '/src/assets/img/hero_1.jpg'"/>
     <div class="card-body">
       <h3 class="text-danger">{{ marketing?.title }}</h3>
       <p>{{ marketing?.content }}</p>

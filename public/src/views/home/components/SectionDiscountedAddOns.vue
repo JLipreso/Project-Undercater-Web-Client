@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <img class="w-100" src="/src/assets/img/hero_1.jpg"/>
+    <img class="w-100" :src="addon?.photo ? 'https://api-fileserver.jlipreso.com/' + addon?.photo : '/src/assets/img/hero_1.jpg'"/>
     <div class="card-body">
       <h3 class="text-dark">{{ addon?.name }}</h3>
       <p class="px-4 py-0">{{ addon?.description }}</p>
