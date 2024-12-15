@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img src="https://smallbizclub.com/wp-content/uploads/2017/12/Awesome-Facebook-Cover-Photos.jpg" class="img-fluid" alt="">
+    <img class="blog-cover img-fluid" :src=" blog?.photo ? 'https://api-fileserver.jlipreso.com/' + blog?.photo : 'https://smallbizclub.com/wp-content/uploads/2017/12/Awesome-Facebook-Cover-Photos.jpg'" alt="">
     <div class="card-body">
       <h1>{{ blog?.title }}</h1>
       <p>{{ blog?.description }}</p>
@@ -25,3 +25,11 @@
   });
 
 </script>
+<style scoped>
+  .blog-cover {
+    height: 280px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>

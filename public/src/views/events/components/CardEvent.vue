@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0 m-4">
-    <img class="w-100" src="/src/assets/image/about-image-3.png"/>
+    <img class="w-100" :src=" event?.photo ? 'https://api-fileserver.jlipreso.com/' + event?.photo : '/src/assets/image/about-image-3.png'"/>
     <div class="card-body p-0 mt-4">
       <div class="d-flex justify-content-between align-items-center pb-4">
         <h1>{{ event?.name }}</h1>
