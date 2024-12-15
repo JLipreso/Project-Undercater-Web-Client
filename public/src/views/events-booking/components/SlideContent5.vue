@@ -39,8 +39,8 @@
       </div>
     </div>
     <div class="d-flex justify-content-end">
-      <button class="btn btn-outline-secondary btn-lg me-4" style="width: 200px;" @click="backSlide()">Back</button>
-      <button class="btn btn-primary btn-lg" style="width: 200px;" @click="postBooking()">Reserve Booking</button>
+      <button class="btn btn-outline-secondary btn-lg me-4" style="width: 200px;" @click="backSlide()" :disabled="loading">Back</button>
+      <button class="btn btn-primary btn-lg" style="width: 200px;" @click="postBooking()" :disabled="loading">Reserve Booking</button>
     </div>
   </div>
 </template>
@@ -58,41 +58,48 @@
     emits: ['next', 'back', 'refresh'],
     data() {
       return {
+        loading: false,
         form: {
           booking_dataid: '',
           first_name: '',
           last_name: '',
           email: '',
-          phone: ''
+          phone: '',
+          total_price: 0
         }
       }
     },
     methods: {
       async postBooking() {
+        this.loading = true;
         await getBookingDataID().then( async (booking_dataid) => {
           this.form.booking_dataid = booking_dataid;
-          await axios.get( variable()['api_main'] + "booking/placeReservation?" + $.param(this.form) ).then( async (response) => {
-            if(response.data?.success) {
-              Swal.fire({
-                title: 'Success',
-                text: response.data?.message,
-                icon: 'success'
-              }).then( async () => {
-                this.form.booking_dataid  = '';
-                this.form.first_name      = '';
-                this.form.last_name       = '';
-                this.form.email           = '';
-                this.form.phone           = '';
-                this.$router.replace('/events-booking-placed');
-              });
-            }
-            else {
-              Swal.fire({
-                title: 'Warning',
-                text: response.data?.message,
-                icon: 'warning'
-              });
-            }
+          await axios.get( variable()['api_main'] + "booking/profile?booking_dataid=" + booking_dataid ).then( async (profile) => {
+            this.form.total_price = profile.data?.grand_total;
+            await axios.get( variable()['api_main'] + "booking/placeReservation?" + $.param(this.form) ).then( async (response) => {
+              this.loading = false;
+              if(response.data?.success) {
+                Swal.fire({
+                  title: 'Success',
+                  text: response.data?.message,
+                  icon: 'success'
+                }).then( async () => {
+                  this.form.booking_dataid  = '';
+                  this.form.first_name      = '';
+                  this.form.last_name       = '';
+                  this.form.email           = '';
+                  this.form.phone           = '';
+                  this.$router.replace('/events-booking-placed');
+                });
+              }
+              else {
+                Swal.fire({
+                  title: 'Warning',
+                  text: response.data?.message,
+                  icon: 'warning'
+                });
+              }
+            });
           });
         });
         

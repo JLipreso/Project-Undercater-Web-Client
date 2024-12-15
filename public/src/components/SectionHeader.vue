@@ -13,7 +13,8 @@
           
           <li v-show="!authenticated"><router-link :class="{ 'active': $route.name == 'login' ? true : false }" to="/login">Login</router-link></li>
           <li v-show="!authenticated"><router-link :class="{ 'active': $route.name == 'registration' ? true : false }" to="/registration">Register</router-link></li>
-          <li><button class="btn btn-danger rounded-5 px-5" @click="()=>{ $router.push('/events') }">Book</button></li>
+          <li><button class="btn btn-danger rounded-5 px-5 me-2" @click="()=>{ $router.push('/events') }">Book</button></li>
+          <li v-show="authenticated"><button class="btn btn-secondary rounded-5 px-5" @click="logoutClient()">Logout</button></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -23,6 +24,7 @@
 <script lang="ts">
 
   import { getLocalUser } from '@/assets/ts/localStorage';
+import Swal from 'sweetalert2';
   import { defineComponent } from 'vue';
 
   export default defineComponent({
@@ -30,6 +32,22 @@
     data() {
       return {
         authenticated: false
+      }
+    },
+    methods: {
+      async logoutClient() {
+        Swal.fire({
+          title: 'Confirmation',
+          text: 'Logout account?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Logout'
+        }).then( async (result) => {
+          if(result.isConfirmed) {
+            localStorage.clear();
+            this.$router.replace('/');
+          }
+        });
       }
     },
     async mounted() {

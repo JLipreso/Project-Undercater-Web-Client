@@ -106,7 +106,6 @@
         await getBookingDataID().then( async (booking_dataid) => {
           await axios.get( variable()['api_main'] + "booking/profile?booking_dataid=" + booking_dataid ).then( async (profile) => {
             this.profile = profile.data;
-            console.log("Summary:", toRaw(profile.data));
           });
         });
       },

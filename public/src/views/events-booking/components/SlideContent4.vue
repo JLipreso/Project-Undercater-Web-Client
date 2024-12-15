@@ -45,7 +45,7 @@
   import { variable } from '@/var';
   import axios from 'axios';
   import { getBookingDataID } from '@/assets/ts/localStorage';
-import Swal from 'sweetalert2';
+  import Swal from 'sweetalert2';
 
   export default defineComponent({
     name: "SlideContent4",

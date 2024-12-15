@@ -1,7 +1,18 @@
 <template>
   <div>
-    <h1>Add Food</h1>
-    <p class="m-0">Please select {{ validate.dish }} food and {{ validate.dessert }} dessert</p>
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="p-0 m-0">Add Food</h1>
+        <p class="p-0 m-0">Please select {{ validate.dish }} food and {{ validate.dessert }} dessert</p>
+      </div>
+      <div>
+        <select class="form-control" @change="onChangeCategory">
+          <option value="0">Select Category</option>
+          <option value="all">All Category</option>
+          <option v-for="(category, ci) in categories" :key="category" :value="category?.name">{{ category?.name }}</option>
+        </select>
+      </div>
+    </div>
     <div class="py-4">
       <swiper :modules="modules" :slides-per-view="1.5" :space-between="5" navigation @swiper="onSwiper">
         <swiper-slide v-for="(menu, mi) in menus" :key="mi">
@@ -52,7 +63,8 @@
         validate: {
           dish: 5,
           dessert: 1
-        }
+        },
+        categories: {} as any
       }
     },
     methods: {
@@ -88,6 +100,16 @@
           this.menus = response.data;
         });
       },
+      async fetchAllMenuCategory() {
+        await axios.get( variable()['api_main'] + "menu_categories/fetchAll" ).then( async (response) => {
+          this.categories = response.data;
+        });
+      },
+      async onChangeCategory(event: any) {
+        await axios.get( variable()['api_main'] + "menu/fetchAll?category=" + event.target.value ).then( async (response) => {
+          this.menus = response.data;
+        });
+      },
       async addToCart(menu: any) {
         await getBookingDataID().then( async (dataid) => {
           await axios.get( variable()['api_main'] + "booking_foods/add?booking_dataid="+ dataid +"&menu_dataid=" + menu?.dataid + "&menu_category=" + menu?.category ).then( async (response) => {
@@ -112,7 +134,9 @@
       }
     },
     async mounted() {
-      await this.fetchAllMenu();
+      await this.fetchAllMenu().then( async () => {
+        await this.fetchAllMenuCategory();
+      });
     },
   });
 
