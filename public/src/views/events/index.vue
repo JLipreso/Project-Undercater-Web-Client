@@ -28,6 +28,7 @@
   import ModalEventAvailability from "./components/ModalEventAvailability.vue";
   import axios from 'axios';
   import { variable } from '@/var';
+  import Swal from 'sweetalert2';
 
   export default defineComponent({
     name: "EventsPage",
@@ -52,8 +53,6 @@
       async openModalAvailChecker(data: any) {
         this.modal.checkAvailability = true;
         this.modal.checkAvailabilityEvent = data?.data;
-
-        console.log(toRaw(data?.data));
       },
       async fetchDraft() {
         await axios.get( variable()['api_main'] + "booking/getDraft/" + this.user?.dataid ).then( async (response) => {
@@ -77,12 +76,8 @@
           });
         }
         else {
-          Swal.fire({
-            title: 'Sign In required',
-            text: 'To check availability, please login first',
-            icon: 'warning'
-          }).then( async () => {
-            this.$router.replace('/login');
+          await this.fetchAll().then( async () => {
+            console.log("Data:", toRaw(this.$data));
           });
         }
       });
