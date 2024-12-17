@@ -5,7 +5,7 @@
       <swiper :modules="modules" :slides-per-view="1" :space-between="5" navigation @swiper="onSwiper">
         <swiper-slide v-for="(addon, ai) in addons" :key="ai">
           <div class="card border-0">
-            <img src="https://static.vecteezy.com/system/resources/previews/036/804/331/non_2x/ai-generated-assorted-indian-food-on-dark-wooden-background-free-photo.jpg" />
+            <img :src=" addon?.photo ? 'https://api-fileserver.jlipreso.com/' + addon?.photo : 'https://static.vecteezy.com/system/resources/previews/036/804/331/non_2x/ai-generated-assorted-indian-food-on-dark-wooden-background-free-photo.jpg'" />
             <div class="card-body p-0 mt-4">
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>

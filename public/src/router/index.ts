@@ -58,6 +58,11 @@ const router = createRouter({
       name: 'registration_verified',
       component: () => import('../views/registration-verified/index.vue')
     },
+    {
+      path: '/my-account',
+      name: 'my_account',
+      component: () => import('../views/my-account/index.vue')
+    },
     
   ],
 })

@@ -34,8 +34,8 @@
         <p>All information provided must be accurate.</p>
       </div>
       <div style="text-align: left;">
-        <input type="checkbox" id="agreeCheckbox">
-        <label for="agreeCheckbox"> I agree to the terms and conditions</label>
+        <input type="checkbox" id="agreeCheckbox" @change="onAgree">
+        <label for="agreeCheckbox" class="me-2"> I agree to the terms and conditions</label>
       </div>
     </div>
     <div class="d-flex justify-content-end">
@@ -46,7 +46,7 @@
 </template>
 <script lang="ts">
 
-  import { defineComponent } from 'vue';
+  import { defineComponent, toRaw } from 'vue';
   import { variable } from '@/var';
   import axios from 'axios';
   import { getBookingDataID } from '@/assets/ts/localStorage';
@@ -66,43 +66,55 @@
           email: '',
           phone: '',
           total_price: 0
-        }
+        },
+        agree: false
       }
     },
     methods: {
+      onAgree(event: any) {
+        this.agree = event.target.checked;
+      },
       async postBooking() {
-        this.loading = true;
-        await getBookingDataID().then( async (booking_dataid) => {
-          this.form.booking_dataid = booking_dataid;
-          await axios.get( variable()['api_main'] + "booking/profile?booking_dataid=" + booking_dataid ).then( async (profile) => {
-            this.form.total_price = profile.data?.grand_total;
-            await axios.get( variable()['api_main'] + "booking/placeReservation?" + $.param(this.form) ).then( async (response) => {
-              this.loading = false;
-              if(response.data?.success) {
-                Swal.fire({
-                  title: 'Success',
-                  text: response.data?.message,
-                  icon: 'success'
-                }).then( async () => {
-                  this.form.booking_dataid  = '';
-                  this.form.first_name      = '';
-                  this.form.last_name       = '';
-                  this.form.email           = '';
-                  this.form.phone           = '';
-                  this.$router.replace('/events-booking-placed');
-                });
-              }
-              else {
-                Swal.fire({
-                  title: 'Warning',
-                  text: response.data?.message,
-                  icon: 'warning'
-                });
-              }
+        if(this.agree) {
+          this.loading = true;
+          await getBookingDataID().then( async (booking_dataid) => {
+            this.form.booking_dataid = booking_dataid;
+            await axios.get( variable()['api_main'] + "booking/profile?booking_dataid=" + booking_dataid ).then( async (profile) => {
+              this.form.total_price = profile.data?.grand_total;
+              await axios.get( variable()['api_main'] + "booking/placeReservation?" + $.param(this.form) ).then( async (response) => {
+                this.loading = false;
+                if(response.data?.success) {
+                  Swal.fire({
+                    title: 'Success',
+                    text: response.data?.message,
+                    icon: 'success'
+                  }).then( async () => {
+                    this.form.booking_dataid  = '';
+                    this.form.first_name      = '';
+                    this.form.last_name       = '';
+                    this.form.email           = '';
+                    this.form.phone           = '';
+                    this.$router.replace('/events-booking-placed');
+                  });
+                }
+                else {
+                  Swal.fire({
+                    title: 'Warning',
+                    text: response.data?.message,
+                    icon: 'warning'
+                  });
+                }
+              });
             });
           });
-        });
-        
+        }
+        else {
+          Swal.fire({
+            title: 'Warning',
+            text: 'You need to agree in our terms and conditions to proceed',
+            icon: 'warning'
+          });
+        }
       },
       backSlide() {
         this.$emit('back', { data: { index: 2 }});

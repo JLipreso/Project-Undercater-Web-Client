@@ -17,7 +17,7 @@
       <swiper :modules="modules" :slides-per-view="1.5" :space-between="5" navigation @swiper="onSwiper">
         <swiper-slide v-for="(menu, mi) in menus" :key="mi">
           <div class="card border-1">
-            <img src="https://static.vecteezy.com/system/resources/previews/036/804/331/non_2x/ai-generated-assorted-indian-food-on-dark-wooden-background-free-photo.jpg" />
+            <img :src=" menu?.photo ? 'https://api-fileserver.jlipreso.com/' + menu?.photo : 'https://static.vecteezy.com/system/resources/previews/036/804/331/non_2x/ai-generated-assorted-indian-food-on-dark-wooden-background-free-photo.jpg'" />
             <div class="card-body" style="overflow-y:auto;height: 240px;">
               <h4>{{ menu?.name }}</h4>
               <p>{{ menu?.description }}</p>
