@@ -16,6 +16,7 @@
                   <swiper-slide><SlideContent3 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
                   <swiper-slide><SlideContent4 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
                   <swiper-slide><SlideContent5 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide><SlideContent6 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
                 </swiper>
               </div>
             </div>
@@ -37,12 +38,13 @@
   import SlideContent3 from "./components/SlideContent3.vue";
   import SlideContent4 from "./components/SlideContent4.vue";
   import SlideContent5 from "./components/SlideContent5.vue";
+  import SlideContent6 from "./components/SlideContent6.vue";
   import SummarySection from "./components/SummarySection.vue";
   import { getLocalEvent } from '@/assets/ts/localStorage';
 
   export default defineComponent({
     name: "EventsBookingPage",
-    components: { SummarySection, SlideContent1, SlideContent2, SlideContent3, SlideContent4, SlideContent5, Swiper, SwiperSlide, SectionFooter, SectionHeader },
+    components: { SummarySection, SlideContent1, SlideContent2, SlideContent3, SlideContent4, SlideContent5, SlideContent6, Swiper, SwiperSlide, SectionFooter, SectionHeader },
     data() {
       return {
         swiper: {} as any,

@@ -20,6 +20,7 @@
 <script lang="ts">
 
   import { defineComponent, toRaw } from 'vue';
+  import { getLocalUser } from "@/assets/ts/localStorage.ts";
   import SectionHeader from "@/components/SectionHeader.vue";
   import SectionFooter from "@/components/SectionFooter.vue";
   import SectionBanner from "@/components/SectionBanner.vue";
@@ -32,7 +33,9 @@
     name: "EventsPage",
     data() {
       return {
+        user: {} as any,
         events: [] as any,
+        draft: {} as any,
         modal: {
           checkAvailability: false,
           checkAvailabilityEvent: {} as Object
@@ -51,11 +54,37 @@
         this.modal.checkAvailabilityEvent = data?.data;
 
         console.log(toRaw(data?.data));
+      },
+      async fetchDraft() {
+        await axios.get( variable()['api_main'] + "booking/getDraft/" + this.user?.dataid ).then( async (response) => {
+          this.draft = response.data;
+          if(response.data?.success) {
+            localStorage.setItem('booking-dataid', response.data?.data?.header?.dataid);
+            localStorage.setItem('booking-event', JSON.stringify(response.data?.data?.event));
+            this.$router.push('/events-booking');
+          }
+        });
       }
     },
     async mounted() {
-      await this.fetchAll().then( async () => {
-        console.log("Data:", toRaw(this.$data));
+      await getLocalUser().then( async (user) => {
+        if(user) {
+          this.user = user;
+          await this.fetchAll().then( async () => {
+            await this.fetchDraft().then( async () => {
+              console.log("Data:", toRaw(this.$data));
+            });
+          });
+        }
+        else {
+          Swal.fire({
+            title: 'Sign In required',
+            text: 'To check availability, please login first',
+            icon: 'warning'
+          }).then( async () => {
+            this.$router.replace('/login');
+          });
+        }
       });
     },
   });

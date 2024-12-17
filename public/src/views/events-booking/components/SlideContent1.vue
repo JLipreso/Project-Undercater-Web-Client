@@ -2,7 +2,6 @@
   <div>
     <h1>Theme and packs</h1>
     <p>Select your prefered theme and number of packs to continue</p>
-
     <div class="my-5">
       <div class="mb-3 mt-2">
         <div class="row">
@@ -65,8 +64,8 @@
   import { toCurrency } from '@/assets/ts/formatter';
   import axios from 'axios';
   import $ from 'jquery';
-import Swal from 'sweetalert2';
-import { getLocalUser } from '@/assets/ts/localStorage';
+  import Swal from 'sweetalert2';
+  import { getLocalUser } from '@/assets/ts/localStorage';
 
   export default defineComponent({
     name: "SlideContent1",

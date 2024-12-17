@@ -1,3 +1,9 @@
+.swal2-container {
+    z-index: 2000;
+}
+.bg-light-gray {
+    background-color: #f5f5f9 !important;
+}
 .navmenu a, .navmenu a {
     text-decoration: none;
     text-transform:uppercase;

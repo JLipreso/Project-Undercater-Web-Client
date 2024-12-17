@@ -10,7 +10,7 @@
           <li><router-link :class="{ 'active': $route.name == 'about' ? true : false }" to="/about">About Us</router-link></li>
           <li><router-link :class="{ 'active': $route.name == 'blog' ? true : false }" to="/blog">Blog</router-link></li>
           <li><router-link :class="{ 'active': $route.name == 'contact' ? true : false }" to="/contact">Contact Us</router-link></li>
-          <li v-show="authenticated"><router-link :class="{ 'active': $route.name == 'login' ? true : false }" to="/login">My Account</router-link></li>
+          <li v-show="authenticated"><router-link :class="{ 'active': $route.name == 'my_account' ? true : false }" to="/my-account">My Account</router-link></li>
           
           <li v-show="!authenticated"><router-link :class="{ 'active': $route.name == 'login' ? true : false }" to="/login">Login</router-link></li>
           <li v-show="!authenticated"><router-link :class="{ 'active': $route.name == 'registration' ? true : false }" to="/registration">Register</router-link></li>
