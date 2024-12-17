@@ -11,12 +11,12 @@
               </div>
               <div class="col-sm-12 col-md-6">
                 <swiper :slides-per-view="1" :space-between="0" @swiper="onSwiper">
-                  <swiper-slide><SlideContent1 :event="event" @refresh="refreshSummary()" @next="slideToSlide" /></swiper-slide>
-                  <swiper-slide><SlideContent2 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide><SlideContent3 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide><SlideContent4 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide><SlideContent5 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
-                  <swiper-slide><SlideContent6 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent1 :event="event" @refresh="refreshSummary()" @next="slideToSlide" /></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent2 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent3 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent4 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent5 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
+                  <swiper-slide class="swiper-no-swiping"><SlideContent6 :event="event" @refresh="refreshSummary()" @back="slideToSlide" @next="slideToSlide"/></swiper-slide>
                 </swiper>
               </div>
             </div>
