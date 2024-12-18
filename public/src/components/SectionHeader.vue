@@ -47,6 +47,9 @@ import Swal from 'sweetalert2';
           if(result.isConfirmed) {
             localStorage.clear();
             this.$router.replace('/');
+            setTimeout( () => {
+              window.location.reload();
+            },800);
           }
         });
       }
